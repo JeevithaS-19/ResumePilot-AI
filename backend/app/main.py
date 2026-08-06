@@ -4,10 +4,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes.resume import router as resume_router
 from app.routes.auth import router as auth_router
 
-from database import Base, engine
+from app.database import Base, engine
 
 # Import models so SQLAlchemy knows which tables to create
-import models
+from app import models
 
 
 # =========================================================

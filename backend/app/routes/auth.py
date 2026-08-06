@@ -63,9 +63,12 @@ def verify_password(
 
 # Development secret key.
 # Before deployment, move this into an environment variable.
-SECRET_KEY = os.getenv(
-    "resumepilot-ai-secret-key-change-before-deployment"
-)
+# =========================================================
+# JWT CONFIGURATION
+# =========================================================
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+
 if not SECRET_KEY:
     raise RuntimeError("SECRET_KEY environment variable is not set")
 
