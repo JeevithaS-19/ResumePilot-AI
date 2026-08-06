@@ -15,10 +15,10 @@ from passlib.context import CryptContext
 
 from jose import jwt, JWTError
 
-from database import get_db
-from models import User
+from app.database import get_db
+from app.models import User
 
-from schemas import (
+from app.schemas import (
     UserRegister,
     UserLogin,
     UserResponse,

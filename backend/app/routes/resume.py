@@ -1,29 +1,21 @@
-from fastapi import (
-    APIRouter,
-    UploadFile,
-    File,
-    Depends,
-    HTTPException,
-    status,
-)
-
-from sqlalchemy.orm import Session
-
-import shutil
-import os
-import re
+from fastapi import ( 
+    APIRouter, UploadFile, File, Depends, HTTPException, status, 
+) 
+from sqlalchemy.orm import Session 
+import shutil 
+import os 
+import re 
 import json
-
-from services.parser import extract_text
-from services.analyzer import (
+from app.services.parser import extract_text
+from app.services.analyzer import (
     detect_sections,
     calculate_ats,
     completeness,
 )
 
-from database import get_db
-from models import User, Analysis
-from routes.auth import get_current_user
+from app.database import get_db
+from app.models import User, Analysis
+from app.routes.auth import get_current_user
 
 
 router = APIRouter()
