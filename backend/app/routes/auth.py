@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-
+import os
 from fastapi import (
     APIRouter,
     Depends,
@@ -63,9 +63,11 @@ def verify_password(
 
 # Development secret key.
 # Before deployment, move this into an environment variable.
-SECRET_KEY = (
+SECRET_KEY = os.getenv(
     "resumepilot-ai-secret-key-change-before-deployment"
 )
+if not SECRET_KEY:
+    raise RuntimeError("SECRET_KEY environment variable is not set")
 
 ALGORITHM = "HS256"
 
