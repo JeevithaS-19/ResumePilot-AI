@@ -35,12 +35,12 @@ export default function Hero() {
           <div className="flex gap-4 mt-10">
 
             {/* Upload Resume Button */}
-            <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700">
-              <Link href="/upload">
-                <Upload className="mr-2 h-5 w-5" />
-                Upload Resume
-              </Link>
-            </Button>
+            <Link href="/upload">
+  <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+    <Upload className="mr-2 h-5 w-5" />
+    Upload Resume
+  </Button>
+</Link>
 
             {/* Watch Demo Button */}
             <Button variant="outline" size="lg">
