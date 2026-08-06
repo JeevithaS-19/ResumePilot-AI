@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "https://resumepilot-ai-35p5.onrender.com";
 
 export async function uploadResume(file: File) {
   const formData = new FormData();
