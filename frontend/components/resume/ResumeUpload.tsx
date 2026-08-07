@@ -115,7 +115,7 @@ if (!token) {
 }
 
 const response = await fetch(
-  "http://127.0.0.1:8000/upload",
+  "https://resumepilot-ai-35p5.onrender.com/upload",
   {
     method: "POST",
 

@@ -48,7 +48,7 @@ useEffect(() => {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/analysis/history",
+        "https://resumepilot-ai-35p5.onrender.com/analysis/history",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -102,7 +102,7 @@ const handleJobMatch = async () => {
 
   try {
     const response = await fetch(
-      `http://127.0.0.1:8000/analysis/${selectedAnalysisId}/job-match?job_description=${encodeURIComponent(
+      `https://resumepilot-ai-35p5.onrender.com/${selectedAnalysisId}/job-match?job_description=${encodeURIComponent(
         jobDescription
       )}`,
       {
