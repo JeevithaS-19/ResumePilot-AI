@@ -36,7 +36,7 @@ export default function AnalysisDetailsPage() {
 
       try {
         const response = await fetch(
-          `https://resumepilot-ai-35p5.onrender.com/${params.id}`,
+          `https://resumepilot-ai-35p5.onrender.com/analysis/${params.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

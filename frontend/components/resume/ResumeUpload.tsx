@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 
 import DragDropArea from "./DragDropArea";
 import AnalysisLoader from "./AnalysisLoader";
-import JobDescription from "./JobDescription";
 
 import { generateReport } from "../../utils/generateReport";
 
@@ -14,16 +13,6 @@ export default function ResumeUpload() {
   const [analyzing, setAnalyzing] = useState(false);
   const [result, setResult] = useState<any>(null);
 
-  const [jobDescription, setJobDescription] = useState("");
-
-  const [matchScore, setMatchScore] =
-    useState<number | null>(null);
-
-  const [matchedSkills, setMatchedSkills] =
-    useState<string[]>([]);
-
-  const [missingSkills, setMissingSkills] =
-    useState<string[]>([]);
 
   if (analyzing) {
     return <AnalysisLoader />;
@@ -93,171 +82,93 @@ export default function ResumeUpload() {
                 {(file.size / 1024 / 1024).toFixed(2)} MB
               </p>
 
-              <button
-                onClick={async () => {
-                  if (!file) return;
+              
+<button
+  onClick={async () => {
+    if (!file) return;
 
-                  setAnalyzing(true);
+    setAnalyzing(true);
 
-                  const formData = new FormData();
-                  formData.append("file", file);
+    const formData = new FormData();
+    formData.append("file", file);
 
-                  try {
-                    // Get authentication token
-const token =
-  localStorage.getItem("resumepilot_token") ||
-  sessionStorage.getItem("resumepilot_token");
+    try {
+      const token =
+        localStorage.getItem("resumepilot_token") ||
+        sessionStorage.getItem("resumepilot_token");
 
-if (!token) {
-  alert("Your session has expired. Please login again.");
-  window.location.href = "/login";
-  return;
-}
+      if (!token) {
+        alert("Your session has expired. Please login again.");
+        window.location.href = "/login";
+        return;
+      }
 
-const response = await fetch(
-  "https://resumepilot-ai-35p5.onrender.com/upload",
-  {
-    method: "POST",
+      const response = await fetch(
+        "https://resumepilot-ai-35p5.onrender.com/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
 
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+      if (
+        response.status === 401 ||
+        response.status === 403
+      ) {
+        localStorage.removeItem("resumepilot_token");
+        localStorage.removeItem("resumepilot_user");
 
-    body: formData,
-  }
-);
+        sessionStorage.removeItem("resumepilot_token");
+        sessionStorage.removeItem("resumepilot_user");
 
-// Token invalid or expired
-if (response.status === 401 || response.status === 403) {
-  localStorage.removeItem("resumepilot_token");
-  localStorage.removeItem("resumepilot_user");
+        alert("Your session has expired. Please login again.");
+        window.location.href = "/login";
+        return;
+      }
 
-  sessionStorage.removeItem("resumepilot_token");
-  sessionStorage.removeItem("resumepilot_user");
+      const data = await response.json();
 
-  alert("Your session has expired. Please login again.");
+      if (!response.ok) {
+        throw new Error(
+          data.detail || "Resume analysis failed."
+        );
+      }
 
-  window.location.href = "/login";
-  return;
-}
+      console.log("Resume analysis saved:", data);
+      setResult(data);
+    } catch (error) {
+      console.error(error);
+      alert("Upload failed");
+    } finally {
+      setAnalyzing(false);
+    }
+  }}
+  className="
+    mt-8
+    w-full
+    bg-gradient-to-r
+    from-blue-600
+    to-indigo-600
+    hover:from-blue-700
+    hover:to-indigo-700
+    transition
+    py-4
+    rounded-2xl
+    font-bold
+    text-lg
+    text-white
+    shadow-lg
+  "
+>
+  🚀 Analyze Resume
 
-const data = await response.json();
-
-if (!response.ok) {
-  throw new Error(
-    data.detail || "Resume analysis failed."
-  );
-}
-
-console.log("Resume analysis saved:", data);
-
-setResult(data);
-
-                  
-
-                    if (jobDescription.trim() !== "") {
-
-                      const skillsDatabase = [
-                        "Python",
-                        "Java",
-                        "C",
-                        "C++",
-                        "JavaScript",
-                        "TypeScript",
-                        "React",
-                        "Next.js",
-                        "Node.js",
-                        "Express",
-                        "MongoDB",
-                        "MySQL",
-                        "PostgreSQL",
-                        "Git",
-                        "GitHub",
-                        "HTML",
-                        "CSS",
-                        "Tailwind CSS",
-                        "FastAPI",
-                        "Docker",
-                        "Linux",
-                        "AWS",
-                        "Azure",
-                        "SQL",
-                        "Machine Learning",
-                        "Data Analytics",
-                        "Power BI",
-                        "Pandas",
-                        "NumPy",
-                        "Matplotlib",
-                      ];
-
-                      const jdSkills = skillsDatabase.filter((skill) =>
-                        jobDescription
-                          .toLowerCase()
-                          .includes(skill.toLowerCase())
-                      );
-
-                      const matched = jdSkills.filter((skill) =>
-                        data.skills.includes(skill)
-                      );
-
-                      const missing = jdSkills.filter(
-                        (skill) => !data.skills.includes(skill)
-                      );
-
-                      const score =
-                        jdSkills.length > 0
-                          ? Math.round(
-                              (matched.length / jdSkills.length) * 100
-                            )
-                          : 0;
-
-                      setMatchedSkills(matched);
-                      setMissingSkills(missing);
-                      setMatchScore(score);
-
-                    } else {
-
-                      setMatchedSkills([]);
-                      setMissingSkills([]);
-                      setMatchScore(null);
-
-                    }
-
-                  } catch (error) {
-                    console.error(error);
-                    alert("Upload failed");
-                  }
-
-                  setAnalyzing(false);
-                }}
-                className="
-                  mt-8
-                  w-full
-                  bg-gradient-to-r
-                  from-blue-600
-                  to-indigo-600
-                  hover:from-blue-700
-                  hover:to-indigo-700
-                  transition
-                  py-4
-                  rounded-2xl
-                  font-bold
-                  text-lg
-                  text-white
-                  shadow-lg
-                "
-              >
-                🚀 Analyze Resume
-              </button>
-
-            </motion.div>
-
-            <JobDescription
-              jobDescription={jobDescription}
-              setJobDescription={setJobDescription}
-            />
-
-          {result && (
+</button>
+</motion.div>
+               
+{result && (
 
 <motion.div
   initial={{ opacity: 0, y: 40 }}
@@ -496,115 +407,6 @@ setResult(data);
 
 </div>
 
-{/* Job Match */}
-
-{matchScore !== null && (
-
-<motion.div
-  initial={{ opacity: 0, y: 30 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.6 }}
-  className="mt-10 bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 p-8"
->
-
-<h2 className="text-3xl font-bold text-green-300 mb-8">
-🎯 Job Match Analysis
-</h2>
-
-<div className="mb-8">
-
-<p className="text-white text-lg mb-3">
-Overall Match Score
-</p>
-
-<div className="w-full bg-slate-700 rounded-full h-5">
-
-<div
-className="bg-green-500 h-5 rounded-full transition-all duration-700"
-style={{ width: `${matchScore}%` }}
-></div>
-
-</div>
-
-<p className="mt-4 text-5xl font-bold text-green-400">
-{matchScore}%
-</p>
-
-</div>
-
-<div className="grid md:grid-cols-2 gap-8">
-
-<div>
-
-<h3 className="text-green-400 text-2xl font-bold mb-5">
-✅ Matched Skills
-</h3>
-
-<div className="flex flex-wrap gap-3">
-
-{matchedSkills.length > 0 ? (
-
-matchedSkills.map((skill) => (
-
-<span
-key={skill}
-className="bg-green-500/20 border border-green-500 px-4 py-2 rounded-full text-green-300"
->
-{skill}
-</span>
-
-))
-
-) : (
-
-<p className="text-slate-400">
-No matched skills
-</p>
-
-)}
-
-</div>
-
-</div>
-
-<div>
-
-<h3 className="text-red-400 text-2xl font-bold mb-5">
-❌ Missing Skills
-</h3>
-
-<div className="flex flex-wrap gap-3">
-
-{missingSkills.length > 0 ? (
-
-missingSkills.map((skill) => (
-
-<span
-key={skill}
-className="bg-red-500/20 border border-red-500 px-4 py-2 rounded-full text-red-300"
->
-{skill}
-</span>
-
-))
-
-) : (
-
-<p className="text-slate-400">
-No missing skills 🎉
-</p>
-
-)}
-
-</div>
-
-</div>
-
-</div>
-
-</motion.div>
-
-)}
 
               {/* AI Suggestions */}
 
@@ -690,14 +492,7 @@ No missing skills 🎉
   <motion.button
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
-    onClick={() =>
-      generateReport(
-        result,
-        matchScore,
-        matchedSkills,
-        missingSkills
-      )
-    }
+    onClick={() => generateReport(result)}
     className="
       px-10
       py-4
