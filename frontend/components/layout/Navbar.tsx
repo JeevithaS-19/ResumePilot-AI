@@ -116,40 +116,53 @@ export default function Navbar() {
         </Link>
 
         {/* ======================================
-            DESKTOP MENU
-        ====================================== */}
+    DESKTOP MENU
+====================================== */}
 
-        <div className="hidden items-center gap-8 text-gray-300 md:flex">
+<div className="hidden items-center gap-8 text-gray-300 md:flex">
 
-          <Link
-            href="/#features"
-            className="transition hover:text-white"
-          >
-            Features
-          </Link>
+  {user ? (
+    <>
+      <Link
+        href="/dashboard"
+        className="transition hover:text-white"
+      >
+        Dashboard
+      </Link>
 
-          <Link
-            href="/#how-it-works"
-            className="transition hover:text-white"
-          >
-            How It Works
-          </Link>
+      <Link
+        href="/upload"
+        className="transition hover:text-white"
+      >
+        Upload Resume
+      </Link>
 
-          <Link
-            href="/#pricing"
-            className="transition hover:text-white"
-          >
-            Pricing
-          </Link>
+      <Link
+        href="/job-match"
+        className="transition hover:text-white"
+      >
+        Job Match
+      </Link>
+    </>
+  ) : (
+    <>
+      <Link
+        href="/#features"
+        className="transition hover:text-white"
+      >
+        Features
+      </Link>
 
-          <Link
-            href="/#docs"
-            className="transition hover:text-white"
-          >
-            Docs
-          </Link>
+      <Link
+        href="/#how-it-works"
+        className="transition hover:text-white"
+      >
+        How It Works
+      </Link>
+    </>
+  )}
 
-        </div>
+</div>
 
         {/* ======================================
             AUTHENTICATION AREA
@@ -215,14 +228,16 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              {/* Logged-out user */}
+  
 
-              <Button
-                variant="ghost"
-                onClick={() => router.push("/login")}
-              >
-                Login
-              </Button>
+             {/* Logged-out user */}
+<Button
+  variant="outline"
+  onClick={() => router.push("/login")}
+  className="border-slate-600 bg-slate-900 text-white hover:bg-slate-800 hover:text-white"
+>
+  Login
+</Button>
 
               <Button
                 onClick={() => router.push("/signup")}

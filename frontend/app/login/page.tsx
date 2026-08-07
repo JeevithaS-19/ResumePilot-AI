@@ -30,7 +30,7 @@ export default function LoginPage() {
 
   try {
     const response = await fetch(
-      "http://127.0.0.1:8000/auth/login",
+      "https://resumepilot-ai-35p5.onrender.com/auth/login",
       {
         method: "POST",
 
@@ -238,22 +238,6 @@ export default function LoginPage() {
               </motion.button>
             </form>
 
-            <div className="my-7 flex items-center gap-4">
-              <div className="h-px flex-1 bg-slate-800" />
-
-              <span className="text-xs uppercase tracking-wider text-slate-600">
-                New to ResumePilot?
-              </span>
-
-              <div className="h-px flex-1 bg-slate-800" />
-            </div>
-
-            <Link
-              href="/signup"
-              className="block w-full rounded-xl border border-slate-700 py-3.5 text-center font-medium text-slate-200 transition hover:border-blue-500/60 hover:bg-blue-500/10"
-            >
-              Create an account
-            </Link>
           </div>
 
           <p className="mt-7 text-center text-sm text-slate-600">

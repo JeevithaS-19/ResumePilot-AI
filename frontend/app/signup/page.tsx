@@ -71,7 +71,7 @@ export default function SignupPage() {
 
   try {
     const response = await fetch(
-      "http://127.0.0.1:8000/auth/register",
+    "https://resumepilot-ai-35p5.onrender.com/auth/register",
       {
         method: "POST",
 
