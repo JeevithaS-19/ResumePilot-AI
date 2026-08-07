@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-
+import { useRouter } from "next/navigation";
 import DragDropArea from "./DragDropArea";
 import AnalysisLoader from "./AnalysisLoader";
 
 import { generateReport } from "../../utils/generateReport";
 
 export default function ResumeUpload() {
+  const router = useRouter();
+
   const [file, setFile] = useState<File | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -177,6 +179,13 @@ export default function ResumeUpload() {
   className="mt-14"
 >
 
+
+  <button
+  onClick={() => router.push("/dashboard")}
+  className="mb-8 rounded-xl border border-blue-500/30 bg-blue-500/10 px-5 py-3 text-sm font-semibold text-blue-300 transition hover:bg-blue-500/20 hover:text-white"
+>
+  ← Back to Dashboard
+</button>
   <h2 className="text-5xl font-bold text-center text-white mb-12">
     Resume Analysis Dashboard
   </h2>
